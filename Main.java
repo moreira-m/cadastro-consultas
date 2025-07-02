@@ -1,6 +1,14 @@
-package com.consultas.app;
+
 
 import java.util.Scanner;
+
+import src.com.consultas.app.Cliente;
+import src.com.consultas.app.ClienteDAO;
+import src.com.consultas.app.Consulta;
+import src.com.consultas.app.ConsultaDAO;
+import src.com.consultas.app.DatabaseConnection;
+import src.com.consultas.app.LoginDAO;
+
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalTime;
