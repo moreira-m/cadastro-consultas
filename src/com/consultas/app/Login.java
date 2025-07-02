@@ -16,7 +16,6 @@ public class Login {
         this.senha = senha;
     }
 
-    // Getters
     public int getUserId() {
         return userId;
     }
@@ -29,7 +28,6 @@ public class Login {
         return senha;
     }
 
-    // Setters
     public void setUserId(int userId) {
         this.userId = userId;
     }

@@ -22,15 +22,15 @@ public class ClienteDAO {
             if (affectedRows > 0) {
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
-                    return rs.getLong(1); // Retorna o ID gerado
+                    return rs.getLong(1);
                 }
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir cliente: " + e.getMessage());
+            // log removido
         }
 
-        return -1; // erro
+        return -1;
     }
 
     public List<Cliente> listarTodos() {
@@ -52,7 +52,7 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao listar clientes: " + e.getMessage());
+            // log removido
         }
 
         return clientes;
@@ -78,7 +78,7 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar cliente por CPF: " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -102,9 +102,8 @@ public class ClienteDAO {
                 cliente.setCpf(rs.getLong("cpf"));
                 return cliente;
             }
-
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar cliente por ID: " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return null;

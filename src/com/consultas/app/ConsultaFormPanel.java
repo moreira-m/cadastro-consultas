@@ -8,7 +8,7 @@ import java.util.Date;
 public class ConsultaFormPanel extends JPanel {
 
     private JTextField cpfField, medicoField, observacoesField;
-    private JSpinner   dataSpinner, horaSpinner;
+    private JSpinner dataSpinner, horaSpinner;
 
     public ConsultaFormPanel() {
         setLayout(new GridBagLayout());
@@ -16,95 +16,119 @@ public class ConsultaFormPanel extends JPanel {
         setBackground(new Color(245, 245, 245));
 
         Font small = new Font("SansSerif", Font.PLAIN, 12);
-        Dimension fieldSize = new Dimension(200,22);
+        Dimension fieldSize = new Dimension(200, 22);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(6,6,6,6);
+        gbc.insets = new Insets(6, 6, 6, 6);
         gbc.anchor = GridBagConstraints.WEST;
 
         int row = 0;
 
-        // CPF
-        gbc.gridx=0; gbc.gridy=row; add(new JLabel("CPF do Cliente:"), gbc);
-        cpfField = novoCampo(fieldSize, small); gbc.gridx=1; add(cpfField, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        add(new JLabel("CPF do Cliente:"), gbc);
+        cpfField = novoCampo(fieldSize, small);
+        gbc.gridx = 1;
+        add(cpfField, gbc);
 
-        // Data (spinner dia/mês/ano)
-        row++; gbc.gridx=0; gbc.gridy=row; add(new JLabel("Data:"), gbc);
+        row++;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        add(new JLabel("Data:"), gbc);
         dataSpinner = new JSpinner(new SpinnerDateModel());
         dataSpinner.setPreferredSize(fieldSize);
-        JSpinner.DateEditor dataEditor = new JSpinner.DateEditor(dataSpinner,"dd/MM/yyyy");
+        JSpinner.DateEditor dataEditor = new JSpinner.DateEditor(dataSpinner, "dd/MM/yyyy");
         dataSpinner.setEditor(dataEditor);
         dataSpinner.setFont(small);
-        gbc.gridx=1; add(dataSpinner, gbc);
+        gbc.gridx = 1;
+        add(dataSpinner, gbc);
 
-        // Horário (spinner HH:mm)
-        row++; gbc.gridx=0; gbc.gridy=row; add(new JLabel("Horário:"), gbc);
+        row++;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        add(new JLabel("Horário:"), gbc);
         horaSpinner = new JSpinner(new SpinnerDateModel());
         horaSpinner.setPreferredSize(fieldSize);
-        JSpinner.DateEditor horaEditor = new JSpinner.DateEditor(horaSpinner,"HH:mm");
+        JSpinner.DateEditor horaEditor = new JSpinner.DateEditor(horaSpinner, "HH:mm");
         horaSpinner.setEditor(horaEditor);
         horaSpinner.setFont(small);
-        gbc.gridx=1; add(horaSpinner, gbc);
+        gbc.gridx = 1;
+        add(horaSpinner, gbc);
 
-        // Médico
-        row++; gbc.gridx=0; gbc.gridy=row; add(new JLabel("Médico:"), gbc);
-        medicoField = novoCampo(fieldSize, small); gbc.gridx=1; add(medicoField, gbc);
+        row++;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        add(new JLabel("Médico:"), gbc);
+        medicoField = novoCampo(fieldSize, small);
+        gbc.gridx = 1;
+        add(medicoField, gbc);
 
-        // Observações
-        row++; gbc.gridx=0; gbc.gridy=row; add(new JLabel("Observações:"), gbc);
-        observacoesField = novoCampo(fieldSize, small); gbc.gridx=1; add(observacoesField, gbc);
+        row++;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        add(new JLabel("Observações:"), gbc);
+        observacoesField = novoCampo(fieldSize, small);
+        gbc.gridx = 1;
+        add(observacoesField, gbc);
 
-        // Botão
-        row++; gbc.gridx=0; gbc.gridy=row; gbc.gridwidth=2; gbc.anchor=GridBagConstraints.CENTER;
+        row++;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         JButton salvarBtn = new JButton("Salvar");
-        salvarBtn.setPreferredSize(new Dimension(100,26));
+        salvarBtn.setPreferredSize(new Dimension(100, 26));
         salvarBtn.setFont(small);
         salvarBtn.addActionListener(e -> salvarConsulta());
         add(salvarBtn, gbc);
     }
 
-    /* ---------- helpers ---------- */
-    private JTextField novoCampo(Dimension d, Font f){
-        JTextField t = new JTextField(); t.setPreferredSize(d); t.setFont(f); return t;
-    }
-    private void limpar(){
-        cpfField.setText(""); medicoField.setText(""); observacoesField.setText("");
+    private JTextField novoCampo(Dimension d, Font f) {
+        JTextField t = new JTextField();
+        t.setPreferredSize(d);
+        t.setFont(f);
+        return t;
     }
 
-    /* ---------- salvar ---------- */
+    private void limpar() {
+        cpfField.setText("");
+        medicoField.setText("");
+        observacoesField.setText("");
+    }
+
     private void salvarConsulta() {
         try {
             long cpf = Long.parseLong(cpfField.getText().trim());
             ClienteDAO cliDAO = new ClienteDAO();
             Cliente cli = cliDAO.buscarPorCPF(cpf);
-            if (cli==null){ JOptionPane.showMessageDialog(this,"Cliente não encontrado."); return; }
+            if (cli == null) {
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado");
+                return;
+            }
 
-            /* Converte java.util.Date → LocalDate / LocalTime */
             ZoneId zone = ZoneId.systemDefault();
-            Date d  = (Date) dataSpinner.getValue();
-            Date h  = (Date) horaSpinner.getValue();
+            Date d = (Date) dataSpinner.getValue();
+            Date h = (Date) horaSpinner.getValue();
             LocalDate data = d.toInstant().atZone(zone).toLocalDate();
             LocalTime hora = h.toInstant().atZone(zone).toLocalTime().withSecond(0).withNano(0);
 
             String medico = medicoField.getText().trim();
-            String obs    = observacoesField.getText();
+            String obs = observacoesField.getText();
 
             ConsultaDAO conDAO = new ConsultaDAO();
-            if (conDAO.horarioOcupado(data,hora,medico)){
-                JOptionPane.showMessageDialog(this,
-                    "O médico \""+medico+"\" já possui consulta em "+data+" às "+hora+".");
+            if (conDAO.horarioOcupado(data, hora, medico)) {
+                JOptionPane.showMessageDialog(this, "O médico \"" + medico + "\" já possui consulta em " + data + " às " + hora + ".");
                 return;
             }
 
             Consulta c = new Consulta(cli.getId(), data, hora, medico, obs);
-            if (conDAO.inserir(c)){
-                JOptionPane.showMessageDialog(this,"Consulta cadastrada com sucesso!");
+            if (conDAO.inserir(c)) {
+                JOptionPane.showMessageDialog(this, "Consulta cadastrada");
                 limpar();
             } else {
-                JOptionPane.showMessageDialog(this,"Erro ao salvar consulta.");
+                JOptionPane.showMessageDialog(this, "Erro ao salvar consulta");
             }
 
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(this,"Erro nos dados: "+ex.getMessage());
+        } catch (Exception ex) {
         }
     }
 }

@@ -6,11 +6,9 @@ public class Cliente {
     private String telefone;
     private String email;
     private long cpf;
-    
-    // Construtor padrão
+
     public Cliente() {}
-    
-    // Construtor com parâmetros
+
     public Cliente(int id, String nome, String telefone, String email, long cpf) {
         this.id = id;
         this.nome = nome;
@@ -18,49 +16,47 @@ public class Cliente {
         this.email = email;
         this.cpf = cpf;
     }
-    
-    // Getters
+
     public int getId() {
         return id;
     }
-    
+
     public String getNome() {
         return nome;
     }
-    
+
     public String getTelefone() {
         return telefone;
     }
 
-    public long getCPF(){
+    public long getCPF() {
         return cpf;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
-    // Setters
+
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setCpf(long cpf){
+    public void setCpf(long cpf) {
         this.cpf = cpf;
     }
-    
+
     @Override
     public String toString() {
         return "Cliente{" +
@@ -68,8 +64,7 @@ public class Cliente {
                 ", nome=\"" + nome + "\"" +
                 ", telefone=\"" + telefone + "\"" +
                 ", email=\"" + email + "\"" +
-                ", cpf=\"" + cpf + "\""+
+                ", cpf=\"" + cpf + "\"" +
                 "}";
     }
 }
-

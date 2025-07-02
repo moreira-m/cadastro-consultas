@@ -28,7 +28,6 @@ public class Consulta {
         this.observacoes = observacoes;
     }
 
-    // Getters
     public int getConsultaId() {
         return consultaId;
     }
@@ -53,7 +52,6 @@ public class Consulta {
         return observacoes;
     }
 
-    // Setters
     public void setConsultaId(int consultaId) {
         this.consultaId = consultaId;
     }
@@ -78,5 +76,3 @@ public class Consulta {
         this.observacoes = observacoes;
     }
 }
-
-

@@ -5,13 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    // Configurações do banco de dados SQLite
     private static final String URL = "jdbc:sqlite:consultas.db";
     
-    // Método para obter conexão
     public static Connection getConnection() throws SQLException {
         try {
-            // Carrega o driver do SQLite
             Class.forName("org.sqlite.JDBC");
             return DriverManager.getConnection(URL);
         } catch (ClassNotFoundException e) {
@@ -19,7 +16,6 @@ public class DatabaseConnection {
         }
     }
     
-    // Método para testar a conexão
     public static boolean testConnection() {
         try (Connection conn = getConnection()) {
             return conn != null && !conn.isClosed();

@@ -18,7 +18,7 @@ public class ConsultaListPanel extends JPanel {
         area.setEditable(false);
 
         if (consultas.isEmpty()) {
-            area.setText("Nenhuma consulta cadastrada.");
+            area.setText("Nenhuma consulta cadastrada");
         } else {
             for (Consulta c : consultas) {
                 Cliente cliente = clienteDAO.buscarPorId(c.getClientId());

@@ -10,11 +10,11 @@ public class ClienteFormPanel extends JPanel {
     public ClienteFormPanel() {
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setBackground(new Color(245, 245, 245)); // cor suave de fundo
+        setBackground(new Color(245, 245, 245));
 
         GridBagConstraints gbc = new GridBagConstraints();
         Font smallFont = new Font("SansSerif", Font.PLAIN, 12);
-        Dimension fieldSize = new Dimension(200, 22); // largura e altura enxuta
+        Dimension fieldSize = new Dimension(200, 22);
 
         gbc.insets = new Insets(6, 6, 6, 6);
         gbc.anchor = GridBagConstraints.WEST;
@@ -24,7 +24,6 @@ public class ClienteFormPanel extends JPanel {
 
         int row = 0;
 
-        // Nome
         gbc.gridx = 0; gbc.gridy = row;
         add(new JLabel("Nome:"), gbc);
         nomeField = new JTextField();
@@ -33,7 +32,6 @@ public class ClienteFormPanel extends JPanel {
         gbc.gridx = 1;
         add(nomeField, gbc);
 
-        // Telefone
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         add(new JLabel("Telefone:"), gbc);
@@ -43,7 +41,6 @@ public class ClienteFormPanel extends JPanel {
         gbc.gridx = 1;
         add(telefoneField, gbc);
 
-        // Email
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         add(new JLabel("Email:"), gbc);
@@ -53,7 +50,6 @@ public class ClienteFormPanel extends JPanel {
         gbc.gridx = 1;
         add(emailField, gbc);
 
-        // CPF
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         add(new JLabel("CPF (somente números):"), gbc);
@@ -63,7 +59,6 @@ public class ClienteFormPanel extends JPanel {
         gbc.gridx = 1;
         add(cpfField, gbc);
 
-        // Botão Salvar
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.gridwidth = 2;
@@ -87,16 +82,12 @@ public class ClienteFormPanel extends JPanel {
             long novoId = dao.inserir(cliente);
 
             if (novoId != -1) {
-                JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!\nID: " + novoId);
                 nomeField.setText("");
                 telefoneField.setText("");
                 emailField.setText("");
                 cpfField.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente.");
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro: verifique os dados.\n" + ex.getMessage());
+        } catch (Exception e) {
         }
     }
 }
