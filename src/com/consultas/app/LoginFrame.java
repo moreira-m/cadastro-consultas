@@ -1,6 +1,9 @@
 package com.consultas.app;
 
 import javax.swing.*;
+
+import com.consultas.app.DashboardFrame;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,6 +62,7 @@ public class LoginFrame extends JFrame {
             statusLabel.setText("Login bem-sucedido!");
             JOptionPane.showMessageDialog(this, "Bem-vindo, " + usuario + "!");
             this.dispose();
+            new DashboardFrame();
 
             // Aqui você pode abrir o DashboardFrame depois
             // new DashboardFrame();

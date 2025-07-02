@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     // Configurações do banco de dados SQLite
-    private static final String URL = "jdbc:sqlite:/Users/Pepe/Desktop/ProjetoFinal/home/ubuntu/upload/consultas.db"; // Caminho absoluto para o arquivo do banco de dados
+    private static final String URL = "jdbc:sqlite:consultas.db";
     
     // Método para obter conexão
     public static Connection getConnection() throws SQLException {

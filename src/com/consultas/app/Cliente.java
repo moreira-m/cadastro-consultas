@@ -5,13 +5,13 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String email;
-    private int cpf;
+    private long cpf;
     
     // Construtor padrão
     public Cliente() {}
     
     // Construtor com parâmetros
-    public Cliente(int id, String nome, String telefone, String email, int cpf) {
+    public Cliente(int id, String nome, String telefone, String email, long cpf) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -32,7 +32,7 @@ public class Cliente {
         return telefone;
     }
 
-    public int getCPF(){
+    public long getCPF(){
         return cpf;
     }
     
@@ -57,7 +57,7 @@ public class Cliente {
         this.email = email;
     }
 
-    public void setCpf(int cpf){
+    public void setCpf(long cpf){
         this.cpf = cpf;
     }
     
