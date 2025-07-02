@@ -1,79 +1,93 @@
 package com.consultas.app;
 
 import javax.swing.*;
-
-import com.consultas.app.DashboardFrame;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class LoginFrame extends JFrame {
 
-    private JTextField usuarioField;
-    private JPasswordField senhaField;
-    private JButton loginButton;
-    private JLabel statusLabel;
+    private final JTextField    usuarioField  = new JTextField(15);
+    private final JPasswordField senhaField   = new JPasswordField(15);
+    private final JButton       loginButton   = new JButton("Entrar");
+    private final JLabel        statusLabel   = new JLabel("");
 
+    /* ----------------------------- CONSTRUTOR ----------------------------- */
     public LoginFrame() {
-        setTitle("Login");
-        setSize(350, 200);
-        setLocationRelativeTo(null); // centraliza na tela
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4, 2, 10, 10));
+        setTitle("Login - Sistema de Consultas");
+        setSize(500, 350);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // Componentes
-        JLabel usuarioLabel = new JLabel("Usuário:");
-        usuarioField = new JTextField();
+        /* === background === */
+        JLabel backgroundLabel = criarBackground();
+        backgroundLabel.setLayout(new GridBagLayout()); // para centralizar form
+        setContentPane(backgroundLabel);
 
-        JLabel senhaLabel = new JLabel("Senha:");
-        senhaField = new JPasswordField();
+        /* === formulário transparente === */
+        JPanel form = new JPanel(new GridBagLayout());
+        form.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(6,6,6,6);
+        gbc.anchor = GridBagConstraints.LINE_END;
+JLabel usuarioLabel = new JLabel("Usuário:");
+usuarioLabel.setForeground(Color.WHITE);
 
-        loginButton = new JButton("Entrar");
-        statusLabel = new JLabel("");
+JLabel senhaLabel = new JLabel("Senha:");
+senhaLabel.setForeground(Color.WHITE);
 
-        // Ação do botão
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                autenticar();
-            }
-        });
+gbc.gridx = 0; gbc.gridy = 0; form.add(usuarioLabel, gbc);
+gbc.gridx = 1; gbc.anchor = GridBagConstraints.LINE_START; form.add(usuarioField, gbc);
 
-        // Adiciona ao layout
-        add(usuarioLabel);
-        add(usuarioField);
-        add(senhaLabel);
-        add(senhaField);
-        add(new JLabel()); // espaço vazio
-        add(loginButton);
-        add(statusLabel);
+gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.LINE_END;
+form.add(senhaLabel, gbc);
+
+        gbc.gridx=1; gbc.anchor=GridBagConstraints.LINE_START; form.add(senhaField, gbc);
+
+        gbc.gridx=1; gbc.gridy=2; gbc.anchor=GridBagConstraints.CENTER;
+        form.add(loginButton, gbc);
+
+        gbc.gridx=1; gbc.gridy=3; form.add(statusLabel, gbc);
+
+        backgroundLabel.add(form, new GridBagConstraints());
+
+        /* ação */
+        loginButton.addActionListener(e -> autenticar());
 
         setVisible(true);
     }
 
+    /* --------------------------- BACKGROUND --------------------------- */
+    private JLabel criarBackground() {
+        URL imgURL = getClass().getResource("/imagens/login-bg.png");
+        if (imgURL != null) {
+            ImageIcon bg = new ImageIcon(imgURL);
+            Image img = bg.getImage().getScaledInstance(500, 350, Image.SCALE_SMOOTH);
+            return new JLabel(new ImageIcon(img));
+        } else {
+            System.err.println("⚠️  Imagem /imagens/login-bg.jpg não encontrada no class-path.");
+            JLabel lbl = new JLabel();
+            lbl.setOpaque(true);
+            lbl.setBackground(Color.LIGHT_GRAY);
+            return lbl;
+        }
+    }
+
+    /* ----------------------------- LOGIN ----------------------------- */
     private void autenticar() {
         String usuario = usuarioField.getText();
-        String senha = new String(senhaField.getPassword());
+        String senha   = new String(senhaField.getPassword());
 
-        LoginDAO loginDAO = new LoginDAO();
-        boolean autenticado = loginDAO.autenticar(usuario, senha);
-
-        if (autenticado) {
-            statusLabel.setText("Login bem-sucedido!");
+        boolean ok = new LoginDAO().autenticar(usuario, senha);
+        if (ok) {
             JOptionPane.showMessageDialog(this, "Bem-vindo, " + usuario + "!");
-            this.dispose();
+            dispose();
             new DashboardFrame();
-
-            // Aqui você pode abrir o DashboardFrame depois
-            // new DashboardFrame();
-
         } else {
             statusLabel.setText("Usuário ou senha inválidos.");
         }
     }
 
-    // Método main para testes
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginFrame());
+        SwingUtilities.invokeLater(LoginFrame::new);
     }
 }
