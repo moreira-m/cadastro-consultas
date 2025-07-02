@@ -5,15 +5,13 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class ConsultaForm extends JFrame {
+public class ConsultaFormPanel extends JPanel {
 
     private JTextField clientIdField, dataField, horarioField, medicoField, observacoesField;
 
-    public ConsultaForm() {
-        setTitle("Nova Consulta");
-        setSize(400, 300);
-        setLocationRelativeTo(null);
+    public ConsultaFormPanel() {
         setLayout(new GridLayout(6, 2, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         add(new JLabel("ID do Cliente:"));
         clientIdField = new JTextField();
@@ -39,8 +37,6 @@ public class ConsultaForm extends JFrame {
         salvarButton.addActionListener(e -> salvarConsulta());
         add(new JLabel()); // espaço vazio
         add(salvarButton);
-
-        setVisible(true);
     }
 
     private void salvarConsulta() {
@@ -56,12 +52,20 @@ public class ConsultaForm extends JFrame {
 
             if (dao.inserir(consulta)) {
                 JOptionPane.showMessageDialog(this, "Consulta cadastrada com sucesso!");
-                dispose();
+                limparCampos();
             } else {
                 JOptionPane.showMessageDialog(this, "Erro ao salvar consulta.");
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Erro: verifique os dados.\n" + ex.getMessage());
         }
+    }
+
+    private void limparCampos() {
+        clientIdField.setText("");
+        dataField.setText("");
+        horarioField.setText("");
+        medicoField.setText("");
+        observacoesField.setText("");
     }
 }

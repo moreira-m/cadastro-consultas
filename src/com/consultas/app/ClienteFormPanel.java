@@ -3,15 +3,13 @@ package com.consultas.app;
 import javax.swing.*;
 import java.awt.*;
 
-public class ClienteForm extends JFrame {
+public class ClienteFormPanel extends JPanel {
 
     private JTextField nomeField, telefoneField, emailField, cpfField;
 
-    public ClienteForm() {
-        setTitle("Cadastro de Cliente");
-        setSize(400, 250);
-        setLocationRelativeTo(null);
+    public ClienteFormPanel() {
         setLayout(new GridLayout(5, 2, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Campos
         add(new JLabel("Nome:"));
@@ -35,8 +33,6 @@ public class ClienteForm extends JFrame {
         salvarButton.addActionListener(e -> salvarCliente());
         add(new JLabel()); // espaço vazio
         add(salvarButton);
-
-        setVisible(true);
     }
 
     private void salvarCliente() {
@@ -52,7 +48,10 @@ public class ClienteForm extends JFrame {
 
             if (novoId != -1) {
                 JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!\nID: " + novoId);
-                dispose();
+                nomeField.setText("");
+                telefoneField.setText("");
+                emailField.setText("");
+                cpfField.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente.");
             }

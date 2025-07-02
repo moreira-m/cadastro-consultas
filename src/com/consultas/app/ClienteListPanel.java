@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ClienteListFrame extends JFrame {
+public class ClienteListPanel extends JPanel {
 
-    public ClienteListFrame() {
-        setTitle("Clientes Cadastrados");
-        setSize(600, 400);
-        setLocationRelativeTo(null);
+    public ClienteListPanel() {
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         ClienteDAO dao = new ClienteDAO();
         List<Cliente> clientes = dao.listarTodos();
@@ -28,7 +26,6 @@ public class ClienteListFrame extends JFrame {
         }
 
         add(new JScrollPane(area), BorderLayout.CENTER);
-        setVisible(true);
     }
 
     private String formatarCliente(Cliente c) {

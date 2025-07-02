@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ConsultaListFrame extends JFrame {
+public class ConsultaListPanel extends JPanel {
 
-    public ConsultaListFrame() {
-        setTitle("Consultas Cadastradas");
-        setSize(600, 400);
-        setLocationRelativeTo(null);
+    public ConsultaListPanel() {
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         ConsultaDAO dao = new ConsultaDAO();
         List<Consulta> consultas = dao.listarTodas();
@@ -28,7 +26,6 @@ public class ConsultaListFrame extends JFrame {
         }
 
         add(new JScrollPane(area), BorderLayout.CENTER);
-        setVisible(true);
     }
 
     private String formatarConsulta(Consulta c) {
