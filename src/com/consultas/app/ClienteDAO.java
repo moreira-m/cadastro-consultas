@@ -10,7 +10,7 @@ public class ClienteDAO {
         String sql = "INSERT INTO clientes (nome, telefone, email, cpf) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, cliente.getNome());
             stmt.setString(2, cliente.getTelefone());
@@ -38,8 +38,8 @@ public class ClienteDAO {
         String sql = "SELECT * FROM clientes ORDER BY nome";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Cliente cliente = new Cliente();
@@ -56,5 +56,57 @@ public class ClienteDAO {
         }
 
         return clientes;
+    }
+
+    public Cliente buscarPorCPF(long cpf) {
+        String sql = "SELECT * FROM clientes WHERE cpf = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setEmail(rs.getString("email"));
+                cliente.setCpf(rs.getLong("cpf"));
+                return cliente;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar cliente por CPF: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    public Cliente buscarPorId(int id) {
+        String sql = "SELECT * FROM clientes WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setEmail(rs.getString("email"));
+                cliente.setCpf(rs.getLong("cpf"));
+                return cliente;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar cliente por ID: " + e.getMessage());
+        }
+
+        return null;
     }
 }

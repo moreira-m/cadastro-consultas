@@ -2,6 +2,7 @@ package com.consultas.app;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class DashboardFrame extends JFrame {
     private CardLayout cardLayout;
@@ -28,7 +29,8 @@ public class DashboardFrame extends JFrame {
         JButton btnListarClientes = new JButton("Listar Clientes");
         JButton btnNovaConsulta = new JButton("Nova Consulta");
         JButton btnListarConsultas = new JButton("Listar Consultas");
-        JButton btnBuscarConsulta = new JButton("Buscar Consulta por ID");
+        JButton btnBuscarConsulta = new JButton("Buscar Consulta por CPF do Cliente");
+        JButton btnBuscarCliente = new JButton("Buscar Cliente por CPF");
         JButton btnExcluirConsulta = new JButton("Excluir Consulta por ID");
 
         menuPanel.add(btnCadastrarCliente);
@@ -36,6 +38,7 @@ public class DashboardFrame extends JFrame {
         menuPanel.add(btnNovaConsulta);
         menuPanel.add(btnListarConsultas);
         menuPanel.add(btnBuscarConsulta);
+        menuPanel.add(btnBuscarCliente);
         menuPanel.add(btnExcluirConsulta);
 
         add(menuPanel, BorderLayout.WEST);
@@ -74,18 +77,46 @@ public class DashboardFrame extends JFrame {
         });
 
         btnBuscarConsulta.addActionListener(e -> {
-            String idStr = JOptionPane.showInputDialog(this, "Digite o ID da consulta:");
+            String cpfStr = JOptionPane.showInputDialog(this, "Digite o CPF do cliente:");
             try {
-                int id = Integer.parseInt(idStr);
-                ConsultaDAO dao = new ConsultaDAO();
-                Consulta consulta = dao.buscarPorId(id);
-                if (consulta != null) {
-                    JOptionPane.showMessageDialog(this, "Consulta encontrada:\n" + formatarConsulta(consulta));
+                long cpf = Long.parseLong(cpfStr);
+                ClienteDAO clienteDAO = new ClienteDAO();
+                Cliente cliente = clienteDAO.buscarPorCPF(cpf);
+
+                if (cliente != null) {
+                    ConsultaDAO consultaDAO = new ConsultaDAO();
+                    List<Consulta> consultas = consultaDAO.buscarPorClienteId(cliente.getId());
+                    if (!consultas.isEmpty()) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Cliente: ").append(cliente.getNome()).append("\n\n");
+                        for (Consulta c : consultas) {
+                            sb.append(formatarConsulta(c)).append("\n--------------------------\n");
+                        }
+                        JOptionPane.showMessageDialog(this, sb.toString());
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Esse cliente não possui consultas agendadas.");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Consulta não encontrada.");
+                    JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "ID inválido.");
+                JOptionPane.showMessageDialog(this, "CPF inválido.");
+            }
+        });
+
+        btnBuscarCliente.addActionListener(e -> {
+            String cpfStr = JOptionPane.showInputDialog(this, "Digite o CPF do cliente:");
+            try {
+                long cpf = Long.parseLong(cpfStr);
+                ClienteDAO dao = new ClienteDAO();
+                Cliente cliente = dao.buscarPorCPF(cpf);
+                if (cliente != null) {
+                    JOptionPane.showMessageDialog(this, "Cliente encontrado:\n" + formatarCliente(cliente));
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "CPF inválido.");
             }
         });
 
@@ -121,5 +152,13 @@ public class DashboardFrame extends JFrame {
                 "\nHorário: " + c.getHorario() +
                 "\nMédico: " + c.getMedico() +
                 "\nObservações: " + c.getObservacoes();
+    }
+
+    private String formatarCliente(Cliente c) {
+        return "ID: " + c.getId() +
+                "\nNome: " + c.getNome() +
+                "\nTelefone: " + c.getTelefone() +
+                "\nEmail: " + c.getEmail() +
+                "\nCPF: " + c.getCPF();
     }
 }

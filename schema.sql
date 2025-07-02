@@ -9,7 +9,7 @@ CREATE TABLE login (
 -- Tabela de clientes
 DROP TABLE IF EXISTS clientes;
 CREATE TABLE clientes (
-    client_id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     telefone VARCHAR(20),
@@ -25,7 +25,5 @@ CREATE TABLE consulta (
     horario TIME NOT NULL,
     medico VARCHAR(255),
     observacoes TEXT,
-    FOREIGN KEY (client_id) REFERENCES clientes(client_id)
+    FOREIGN KEY (client_id) REFERENCES clientes(id)
 );
-
-

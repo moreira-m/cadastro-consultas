@@ -10,8 +10,9 @@ public class ConsultaListPanel extends JPanel {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        ConsultaDAO dao = new ConsultaDAO();
-        List<Consulta> consultas = dao.listarTodas();
+        ConsultaDAO consultaDAO = new ConsultaDAO();
+        ClienteDAO clienteDAO = new ClienteDAO();
+        List<Consulta> consultas = consultaDAO.listarTodas();
 
         JTextArea area = new JTextArea();
         area.setEditable(false);
@@ -20,7 +21,8 @@ public class ConsultaListPanel extends JPanel {
             area.setText("Nenhuma consulta cadastrada.");
         } else {
             for (Consulta c : consultas) {
-                area.append(formatarConsulta(c));
+                Cliente cliente = clienteDAO.buscarPorId(c.getClientId());
+                area.append(formatarConsulta(c, cliente));
                 area.append("\n--------------------------\n");
             }
         }
@@ -28,9 +30,14 @@ public class ConsultaListPanel extends JPanel {
         add(new JScrollPane(area), BorderLayout.CENTER);
     }
 
-    private String formatarConsulta(Consulta c) {
-        return "ID: " + c.getConsultaId() +
+    private String formatarConsulta(Consulta c, Cliente cliente) {
+        String cpfInfo = (cliente != null) ? String.valueOf(cliente.getCPF()) : "Desconhecido";
+        String nome = (cliente != null) ? cliente.getNome() : "Desconhecido";
+
+        return "Consulta ID: " + c.getConsultaId() +
                "\nCliente ID: " + c.getClientId() +
+               "\nNome: " + nome +
+               "\nCPF: " + cpfInfo +
                "\nData: " + c.getData() +
                "\nHorário: " + c.getHorario() +
                "\nMédico: " + c.getMedico() +

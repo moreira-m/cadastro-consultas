@@ -15,8 +15,8 @@ public class ConsultaDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, consulta.getClientId());
-            stmt.setString(2, consulta.getData().toString()); // Convert LocalDate to String
-            stmt.setString(3, consulta.getHorario().toString()); // Convert LocalTime to String
+            stmt.setString(2, consulta.getData().toString());
+            stmt.setString(3, consulta.getHorario().toString());
             stmt.setString(4, consulta.getMedico());
             stmt.setString(5, consulta.getObservacoes());
             
@@ -40,8 +40,8 @@ public class ConsultaDAO {
                 Consulta consulta = new Consulta(
                     rs.getInt("consulta_id"),
                     rs.getInt("client_id"),
-                    LocalDate.parse(rs.getString("data")), // Convert String to LocalDate
-                    LocalTime.parse(rs.getString("horario")), // Convert String to LocalTime
+                    LocalDate.parse(rs.getString("data")),
+                    LocalTime.parse(rs.getString("horario")),
                     rs.getString("medico"),
                     rs.getString("observacoes")
                 );
@@ -65,15 +65,14 @@ public class ConsultaDAO {
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                Consulta consulta = new Consulta(
+                return new Consulta(
                     rs.getInt("consulta_id"),
                     rs.getInt("client_id"),
-                    LocalDate.parse(rs.getString("data")), // Convert String to LocalDate
-                    LocalTime.parse(rs.getString("horario")), // Convert String to LocalTime
+                    LocalDate.parse(rs.getString("data")),
+                    LocalTime.parse(rs.getString("horario")),
                     rs.getString("medico"),
                     rs.getString("observacoes")
                 );
-                return consulta;
             }
             
         } catch (SQLException e) {
@@ -90,8 +89,8 @@ public class ConsultaDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, consulta.getClientId());
-            stmt.setString(2, consulta.getData().toString()); // Convert LocalDate to String
-            stmt.setString(3, consulta.getHorario().toString()); // Convert LocalTime to String
+            stmt.setString(2, consulta.getData().toString());
+            stmt.setString(3, consulta.getHorario().toString());
             stmt.setString(4, consulta.getMedico());
             stmt.setString(5, consulta.getObservacoes());
             stmt.setInt(6, consulta.getConsultaId());
@@ -118,6 +117,33 @@ public class ConsultaDAO {
             return false;
         }
     }
+
+    public List<Consulta> buscarPorClienteId(int clienteId) {
+        List<Consulta> consultas = new ArrayList<>();
+        String sql = "SELECT * FROM consulta WHERE client_id = ? ORDER BY data, horario";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, clienteId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Consulta consulta = new Consulta(
+                    rs.getInt("consulta_id"),
+                    rs.getInt("client_id"),
+                    LocalDate.parse(rs.getString("data")),
+                    LocalTime.parse(rs.getString("horario")),
+                    rs.getString("medico"),
+                    rs.getString("observacoes")
+                );
+                consultas.add(consulta);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar consultas por cliente ID: " + e.getMessage());
+        }
+
+        return consultas;
+    }
 }
-
-
