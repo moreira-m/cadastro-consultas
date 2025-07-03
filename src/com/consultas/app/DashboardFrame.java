@@ -149,9 +149,11 @@ public class DashboardFrame extends JFrame {
     }
 
     private String formatarConsulta(Consulta c) {
+        String dataFormatada = c.getData().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
         return "ID: " + c.getConsultaId() +
                 "\nCliente ID: " + c.getClientId() +
-                "\nData: " + c.getData() +
+                "\nData: " + dataFormatada +
                 "\nHorário: " + c.getHorario() +
                 "\nMédico: " + c.getMedico() +
                 "\nObservações: " + c.getObservacoes();

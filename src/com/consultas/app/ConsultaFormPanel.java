@@ -116,7 +116,9 @@ public class ConsultaFormPanel extends JPanel {
 
             ConsultaDAO conDAO = new ConsultaDAO();
             if (conDAO.horarioOcupado(data, hora, medico)) {
-                JOptionPane.showMessageDialog(this, "O médico \"" + medico + "\" já possui consulta em " + data + " às " + hora + ".");
+                String dataFormatada = data.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                JOptionPane.showMessageDialog(this, "O médico \"" + medico + "\" já possui consulta em " + dataFormatada + " às " + hora + ".");
                 return;
             }
 

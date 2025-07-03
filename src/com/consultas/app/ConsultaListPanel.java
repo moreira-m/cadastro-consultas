@@ -2,6 +2,7 @@ package com.consultas.app;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ConsultaListPanel extends JPanel {
@@ -34,13 +35,15 @@ public class ConsultaListPanel extends JPanel {
         String cpfInfo = (cliente != null) ? String.valueOf(cliente.getCPF()) : "Desconhecido";
         String nome = (cliente != null) ? cliente.getNome() : "Desconhecido";
 
+        String dataFormatada = c.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
         return "Consulta ID: " + c.getConsultaId() +
-               "\nCliente ID: " + c.getClientId() +
-               "\nNome: " + nome +
-               "\nCPF: " + cpfInfo +
-               "\nData: " + c.getData() +
-               "\nHorário: " + c.getHorario() +
-               "\nMédico: " + c.getMedico() +
-               "\nObservações: " + c.getObservacoes();
+                "\nCliente ID: " + c.getClientId() +
+                "\nNome: " + nome +
+                "\nCPF: " + cpfInfo +
+                "\nData: " + dataFormatada +
+                "\nHorário: " + c.getHorario() +
+                "\nMédico: " + c.getMedico() +
+                "\nObservações: " + c.getObservacoes();
     }
 }
