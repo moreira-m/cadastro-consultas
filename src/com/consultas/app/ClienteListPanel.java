@@ -17,7 +17,7 @@ public class ClienteListPanel extends JPanel {
         area.setEditable(false);
 
         if (clientes.isEmpty()) {
-            area.setText("Nenhum cliente cadastrado.");
+            area.setText("Nenhum cliente cadastrado");
         } else {
             for (Cliente c : clientes) {
                 area.append(formatarCliente(c));

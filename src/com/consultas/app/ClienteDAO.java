@@ -27,7 +27,6 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            // log removido
         }
 
         return -1;
@@ -52,7 +51,6 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            // log removido
         }
 
         return clientes;
